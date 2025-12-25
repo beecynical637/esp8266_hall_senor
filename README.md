@@ -1,64 +1,64 @@
 # ESP8266 Hall Sensor RPM Counter with Web Interface
 
-Этот проект представляет собой программное обеспечение для микроконтроллера ESP8266, реализующее счётчик оборотов (RPM) на основе датчика Холла с отображением информации через веб-интерфейс. Проект ориентирован на начинающих и преподавателей технических дисциплин, которым требуется простой пример работы с ESP8266, веб-сервером и обработкой сигналов от датчика Холла.
+This project provides software for the ESP8266 microcontroller, implementing an RPM counter based on a Hall sensor with information display via a web interface. The project is aimed at beginners and teachers of technical disciplines who need a simple example of working with ESP8266, a web server, and processing signals from a Hall sensor.
 
-## Описание
+## Description
 
-Прошивка позволяет считать количество оборотов в минуту (RPM) с помощью датчика Холла, подключённого к ESP8266, и отображать результат на встроенной веб-странице. Веб-интерфейс прост для понимания и подходит для использования в учебных целях.
+The firmware allows counting the number of revolutions per minute (RPM) using a Hall sensor connected to the ESP8266 and displaying the result on a built-in web page. The web interface is easy to understand and suitable for educational purposes.
 
-**Ключевые возможности:**
-- Подсчёт оборотов с помощью датчика Холла
-- Поддержка ESP8266 (например, NodeMCU, Wemos D1 Mini)
-- Встроенный HTTP веб-сервер для отображения текущих показателей RPM
-- Обновление значений RPM в реальном времени
+**Key features:**
+- RPM counting using a Hall sensor
+- Support for ESP8266 (e.g., NodeMCU, Wemos D1 Mini)
+- Built-in HTTP web server for displaying current RPM readings
+- Real-time RPM value updates
 
-## Структура проекта
+## Project Structure
 
 ```
-ESP8266_Hall_Senor/
-│   platformio.ini          # Конфигурация PlatformIO
-│   README.md              # Этот файл
+ESP8266_Hall_Sensor/
+│   platformio.ini          # PlatformIO configuration
+│   README.md
 │   
 ├───include/
-│       README             # Описание папки include
-│       wifi_credentials.h         # Настройки Wi-Fi (не добавлять в git!)
-│       wifi_credentials.h.example # Шаблон для настроек Wi-Fi
+│       README             # Description of the include folder
+│       wifi_credentials.h         # Wi-Fi settings (do not add to git!)
+│       wifi_credentials.h.example # Template for Wi-Fi settings
 │       
 ├───lib/
-│       README             # Описание папки lib
+│       README             # Description of the lib folder
 │
 ├───src/
-│       main.cpp           # Основной код прошивки
+│       main.cpp           # Main firmware code
 │
 └───test/
-        README             # Описание папки test
+        README             # Description of the test folder
 ```
 
-## Аппаратные требования
+## Hardware Requirements
 
-- **ESP8266** (NodeMCU, Wemos D1 Mini или аналогичная плата)
-- **Датчик Холла** (A3144, SS49E, OH49E или аналогичный) - 2 шт.
-- **Дисплей TM1637** (4-разрядный 7-сегментный) - 2 шт.
-- **Соединительные провода** (dupont или breadboard провода)
-- **USB кабель** для программирования ESP8266
-- **Breadboard** (макетная плата) - опционально, для удобства сборки
+- **ESP8266** (NodeMCU, Wemos D1 Mini or similar board)
+- **Hall Sensor** (A3144, SS49E, OH49E or similar) - 2 pcs.
+- **TM1637 Display** (4-digit 7-segment) - 2 pcs.
+- **Connecting wires** (dupont or breadboard wires)
+- **USB cable** for programming ESP8266
+- **Breadboard** (optional, for easy assembly)
 
-## Полная схема подключения
+## Full Connection Diagram
 
-### Расположение пинов на NodeMCU v1.0:
+### Pin layout on NodeMCU v1.0:
 ```
                     ESP8266 NodeMCU
                 ┌─────────────────────┐
                 │                     │
              A0 │ •                 • │ D0
-             G  │ •                 • │ D1  <- CLK дисплея 1
-             VV │ •                 • │ D2  <- DIO дисплея 1
-             S3 │ •                 • │ D3  <- CLK дисплея 2
-             S2 │ •                 • │ D4  <- DIO дисплея 2
+             G  │ •                 • │ D1  <- Display 1 CLK
+             VV │ •                 • │ D2  <- Display 1 DIO
+             S3 │ •                 • │ D3  <- Display 2 CLK
+             S2 │ •                 • │ D4  <- Display 2 DIO
              S1 │ •                 • │ 3V
              SC │ •                 • │ G
-             S0 │ •                 • │ D5  <- Датчик Холла 1
-             SK │ •                 • │ D6  <- Датчик Холла 2
+             S0 │ •                 • │ D5  <- Hall Sensor 1
+             SK │ •                 • │ D6  <- Hall Sensor 2
              SD │ •                 • │ D7
              CMD│ •                 • │ D8
                 │      [USB]          │
@@ -67,15 +67,14 @@ ESP8266_Hall_Senor/
              EN │ •                 • │ G
              RST│ •                 • │ G   
       GND -> VIN│ •                 • │ 3V  
-                │                     │
                 └─────────────────────┘
 ```
 
-### Схема подключения дисплеев TM1637
+### TM1637 Display Connection Diagram
 
-**Первый дисплей (для датчика 1):**
+**First display (for sensor 1):**
 ```
-ESP8266 NodeMCU          Дисплей TM1637 #1
+ESP8266 NodeMCU          TM1637 Display #1
 ┌─────────────────┐      ┌─────────────────┐
 │                 │      │                 │
 │    3V3 (3.3V) ──┼──────┼── VCC           │
@@ -89,9 +88,9 @@ ESP8266 NodeMCU          Дисплей TM1637 #1
 └─────────────────┘      └─────────────────┘
 ```
 
-**Второй дисплей (для датчика 2):**
+**Second display (for sensor 2):**
 ```
-ESP8266 NodeMCU          Дисплей TM1637 #2
+ESP8266 NodeMCU          TM1637 Display #2
 ┌─────────────────┐      ┌─────────────────┐
 │                 │      │                 │
 │    3V3 (3.3V) ──┼──────┼── VCC           │
@@ -105,11 +104,11 @@ ESP8266 NodeMCU          Дисплей TM1637 #2
 └─────────────────┘      └─────────────────┘
 ```
 
-### Схема подключения датчиков Холла
+### Hall Sensor Connection Diagram
 
-**Первый датчик Холла A3144 (для дисплея 1):**
+**First Hall Sensor A3144 (for display 1):**
 ```
-ESP8266 NodeMCU          Датчик Холла A3144 #1
+ESP8266 NodeMCU          Hall Sensor A3144 #1
 ┌─────────────────┐      ┌─────────────────┐
 │                 │      │                 │
 │    3V3 (3.3V) ──┼──────┼── VCC           │
@@ -121,9 +120,9 @@ ESP8266 NodeMCU          Датчик Холла A3144 #1
 └─────────────────┘      └─────────────────┘
 ```
 
-**Второй датчик Холла A3144 (для дисплея 2):**
+**Second Hall Sensor A3144 (for display 2):**
 ```
-ESP8266 NodeMCU          Датчик Холла A3144 #2
+ESP8266 NodeMCU          Hall Sensor A3144 #2
 ┌─────────────────┐      ┌─────────────────┐
 │                 │      │                 │
 │    3V3 (3.3V) ──┼──────┼── VCC           │
@@ -135,106 +134,106 @@ ESP8266 NodeMCU          Датчик Холла A3144 #2
 └─────────────────┘      └─────────────────┘
 ```
 
-### Сводная таблица подключений:
+### Connection Summary Table:
 
-| Компонент | Пин ESP8266 | Описание |
-|-----------|-------------|----------|
-| **Дисплей 1** | | |
-| TM1637 CLK1 | D1 (GPIO5) | Тактовый сигнал дисплея 1 |
-| TM1637 DIO1 | D2 (GPIO4) | Данные дисплея 1 |
-| **Дисплей 2** | | |
-| TM1637 CLK2 | D3 (GPIO0) | Тактовый сигнал дисплея 2 |
-| TM1637 DIO2 | D4 (GPIO2) | Данные дисплея 2 |
-| **Датчики Холла** | | |
-| Hall Sensor 1 | D5 (GPIO14) | Выход датчика Холла 1 |
-| Hall Sensor 2 | D6 (GPIO12) | Выход датчика Холла 2 |
-| **Питание** | | |
-| VCC (все компоненты) | 3V3 | Питание +3.3V |
-| GND (все компоненты) | GND | Общая земля |
+| Component | ESP8266 Pin | Description |
+|-----------|-------------|-------------|
+| **Display 1** | | |
+| TM1637 CLK1 | D1 (GPIO5) | Display 1 clock signal |
+| TM1637 DIO1 | D2 (GPIO4) | Display 1 data |
+| **Display 2** | | |
+| TM1637 CLK2 | D3 (GPIO0) | Display 2 clock signal |
+| TM1637 DIO2 | D4 (GPIO2) | Display 2 data |
+| **Hall Sensors** | | |
+| Hall Sensor 1 | D5 (GPIO14) | Hall sensor 1 output |
+| Hall Sensor 2 | D6 (GPIO12) | Hall sensor 2 output |
+| **Power** | | |
+| VCC (all components) | 3V3 | +3.3V power |
+| GND (all components) | GND | Common ground |
 
-### Подключение магнитов:
-- Магниты должны находиться на расстоянии 1-10 мм от соответствующих датчиков Холла
-- При вращении объектов магниты должны периодически приближаться к датчикам
-- Датчики срабатывают при приближении южного полюса магнита (для A3144)
+### Magnet Connection:
+- Magnets should be at a distance of 1-10 mm from the corresponding Hall sensors
+- When rotating objects, magnets should periodically approach the sensors
+- Sensors trigger when the south pole of the magnet approaches (for A3144)
 
-## Установка среды разработки
+## Development Environment Setup
 
-### Шаг 1: Установка Visual Studio Code
-1. Перейдите на [официальный сайт VS Code](https://code.visualstudio.com/)
-2. Скачайте версию для вашей операционной системы
-3. Запустите установщик и следуйте инструкциям
+### Step 1: Installing Visual Studio Code
+1. Go to the [official VS Code website](https://code.visualstudio.com/)
+2. Download the version for your operating system
+3. Run the installer and follow the instructions
 
-### Шаг 2: Установка PlatformIO
-1. Откройте VS Code
-2. Нажмите **Ctrl+Shift+X** (или перейдите в Extensions на боковой панели)
-3. В поле поиска введите: `PlatformIO IDE`
-4. Найдите расширение "PlatformIO IDE" от PlatformIO
-5. Нажмите **Install**
-6. Дождитесь завершения установки (может занять несколько минут)
-7. Перезапустите VS Code
+### Step 2: Installing PlatformIO
+1. Open VS Code
+2. Press **Ctrl+Shift+X** (or go to Extensions on the sidebar)
+3. In the search field, enter: `PlatformIO IDE`
+4. Find the "PlatformIO IDE" extension by PlatformIO
+5. Click **Install**
+6. Wait for the installation to complete (may take several minutes)
+7. Restart VS Code
 
-### Шаг 3: Получение проекта
+### Step 3: Obtaining the Project
 
-**Вариант А: Загрузка ZIP-архива (для тех, у кого нет Git)**
-1. Перейдите на [страницу репозитория](https://github.com/beecynical637/ESP8266_Hall_Senor)
-2. Нажмите зелёную кнопку **Code**
-3. Выберите **Download ZIP**
-4. Распакуйте архив в удобную папку
-5. В VS Code: **File → Open Folder** → выберите распакованную папку
+**Option A: Downloading ZIP Archive (for those without Git)**
+1. Go to the [repository page](https://github.com/beecynical637/ESP8266_Hall_Sensor)
+2. Click the green **Code** button
+3. Select **Download ZIP**
+4. Unpack the archive into a convenient folder
+5. In VS Code: **File → Open Folder** → select the unpacked folder
 
-**Вариант Б: Клонирование через Git (если Git установлен)**
+**Option B: Cloning via Git (if Git is installed)**
 ```bash
-git clone https://github.com/beecynical637/ESP8266_Hall_Senor.git
+git clone https://github.com/beecynical637/ESP8266_Hall_Sensor.git
 ```
 
-## Настройка Wi-Fi подключения
+## Wi-Fi Connection Setup
 
-### Создание файла конфигурации:
-1. Откройте папку проекта в VS Code
-2. Перейдите в папку `include/`
-3. Найдите файл `wifi_credentials.h.example`
-4. **Скопируйте** этот файл в той же папке
-5. **Переименуйте** копию в `wifi_credentials.h`
+### Creating a Configuration File:
+1. Open the project folder in VS Code
+2. Go to the `include/` folder
+3. Find the file `wifi_credentials.h.example`
+4. **Copy** this file in the same folder
+5. **Rename** the copy to `wifi_credentials.h`
 
-### Редактирование настроек Wi-Fi:
-1. Откройте файл `include/wifi_credentials.h`
-2. Найдите строки:
+### Editing Wi-Fi Settings:
+1. Open the file `include/wifi_credentials.h`
+2. Find the lines:
    ```cpp
    const char* ssid = "YOUR_WIFI_SSID";
    const char* password = "YOUR_WIFI_PASSWORD";
    ```
-3. Замените на ваши данные:
+3. Replace with your data:
    ```cpp
-   const char* ssid = "МояWiFiСеть";           // Имя вашей Wi-Fi сети
-   const char* password = "МойПарольWiFi";     // Пароль от Wi-Fi
+   const char* ssid = "MyWiFiNetwork";           // Your Wi-Fi network name
+   const char* password = "MyWiFiPassword";     // Wi-Fi password
    ```
-4. Сохраните файл (**Ctrl+S**)
+4. Save the file (**Ctrl+S**)
 
-**Важно:** 
-- Используйте точное имя сети (регистр имеет значение)
-- ESP8266 поддерживает только сети 2.4 ГГц (не 5 ГГц)
+**Important:**
+- Use the exact network name (case-sensitive)
+- ESP8266 only supports 2.4 GHz networks (not 5 GHz)
 
-## Компиляция и загрузка прошивки
+## Firmware Compilation and Upload
 
-### Подготовка:
-1. Подключите ESP8266 к компьютеру через USB кабель
-2. Убедитесь, что драйверы установлены (обычно устанавливаются автоматически)
+### Preparation:
+1. Connect ESP8266 to the computer via USB cable
+2. Ensure drivers are installed (usually installed automatically)
 
-### Загрузка через PlatformIO:
-1. Откройте проект в VS Code
-2. Найдите иконку PlatformIO на левой боковой панели (иконка "головы муравья")
-3. Нажмите на неё, откроется панель PlatformIO
-4. В разделе "PROJECT TASKS" найдите ваш проект
-5. Разверните "env:nodemcuv2" (или соответствующую среду)
-6. Нажмите **"Upload"**
+### Uploading via PlatformIO:
+1. Open the project in VS Code
+2. Find the PlatformIO icon on the left sidebar (ant head icon)
+3. Click it, the PlatformIO panel will open
+4. In the "PROJECT TASKS" section, find your project
+5. Expand "env:nodemcuv2" (or the corresponding environment)
+6. Click **"Upload"**
 
-**Альтернативные способы загрузки:**
-- Горячие клавиши: **Ctrl+Alt+U**
-- Через командную палитру: **Ctrl+Shift+P** → "PlatformIO: Upload"
-- Через панель внизу: кнопка со стрелкой вправо
+**Alternative upload methods:**
+- Hotkeys: **Ctrl+Alt+U**
+- Via command palette: **Ctrl+Shift+P** → "PlatformIO: Upload"
+- Via bottom panel: right arrow button
 
-### Отслеживание процесса:
-В нижней части VS Code появится терминал с информацией о компиляции и загрузке:
+### Monitoring the Process:
+A terminal will appear at the bottom of VS Code with compilation and upload information:
 ```
 Building .pio/build/nodemcuv2/src/main.cpp.o
 Linking .pio/build/nodemcuv2/firmware.elf
@@ -246,14 +245,14 @@ Wrote 261136 bytes (189516 compressed) at 0x00000000 in 16.7 seconds
 Hash of data verified.
 ```
 
-## Использование
+## Usage
 
-### Проверка подключения:
-1. После загрузки откройте Serial Monitor:
+### Checking Connection:
+1. After uploading, open Serial Monitor:
    - **Ctrl+Shift+P** → "PlatformIO: Serial Monitor"
-   - Или через панель PlatformIO → "Monitor"
-2. Установите скорость **115200 baud**
-3. Вы увидите процесс подключения к Wi-Fi:
+   - Or via PlatformIO panel → "Monitor"
+2. Set speed to **115200 baud**
+3. You will see the Wi-Fi connection process:
    ```
    Connecting to WiFi...
    WiFi connected!
@@ -261,76 +260,76 @@ Hash of data verified.
    Web server started
    ```
 
-### Проверка дисплеев:
-1. После успешной загрузки прошивки оба дисплея TM1637 должны показывать "0"
-2. При вращении магнитов возле датчиков Холла значения RPM должны обновляться на соответствующих дисплеях
-3. Дисплей 1 показывает RPM от датчика 1 (D5)
-4. Дисплей 2 показывает RPM от датчика 2 (D6)
+### Checking Displays:
+1. After successful firmware upload, both TM1637 displays should show "0"
+2. When rotating magnets near the Hall sensors, RPM values should update on the corresponding displays
+3. Display 1 shows RPM from sensor 1 (D5)
+4. Display 2 shows RPM from sensor 2 (D6)
 
-### Доступ к веб-интерфейсу:
-1. Скопируйте IP-адрес из Serial Monitor
-2. Откройте браузер на любом устройстве в той же сети
-3. Введите IP-адрес в адресную строку
-4. Нажмите Enter - откроется страница с показаниями RPM от обоих датчиков
+### Accessing the Web Interface:
+1. Copy the IP address from Serial Monitor
+2. Open a browser on any device in the same network
+3. Enter the IP address in the address bar
+4. Press Enter - a page with RPM readings from both sensors will open
 
-### Тестирование датчиков:
-1. Поднесите магниты к соответствующим датчикам Холла
-2. Медленно вращайте магниты или перемещайте их туда-сюда
-3. В Serial Monitor должны появляться сообщения о срабатывании обоих датчиков
-4. На дисплеях и веб-странице должны обновляться значения RPM в реальном времени для каждого датчика отдельно
+### Testing Sensors:
+1. Bring magnets close to the corresponding Hall sensors
+2. Slowly rotate the magnets or move them back and forth
+3. Serial Monitor should show messages about both sensors triggering
+4. Displays and web page should update RPM values in real time for each sensor separately
 
-## Возможные проблемы и решения
+## Possible Issues and Solutions
 
-### ESP8266 не подключается к Wi-Fi:
-- **Проверьте настройки:** убедитесь, что SSID и пароль в `wifi_credentials.h` введены правильно
-- **Частота сети:** ESP8266 работает только с 2.4 ГГц сетями (не 5 ГГц)
-- **Расстояние:** поднесите ESP8266 ближе к роутеру
-- **Перезагрузка:** нажмите кнопку RESET на ESP8266
+### ESP8266 does not connect to Wi-Fi:
+- **Check settings:** ensure SSID and password in `wifi_credentials.h` are entered correctly
+- **Network frequency:** ESP8266 only works with 2.4 GHz networks (not 5 GHz)
+- **Distance:** bring ESP8266 closer to the router
+- **Reboot:** press the RESET button on ESP8266
 
-### Дисплеи TM1637 не работают:
-- **Проверьте подключение:** убедитесь, что CLK и DIO провода подключены правильно
-- **Питание:** проверьте подачу 3.3V на VCC и подключение GND
-- **Качество соединения:** убедитесь в надёжности контактов
-- **Совместимость дисплея:** некоторые дисплеи могут требовать 5V питания
+### TM1637 displays do not work:
+- **Check connection:** ensure CLK and DIO wires are connected correctly
+- **Power:** check 3.3V supply to VCC and GND connection
+- **Connection quality:** ensure reliable contacts
+- **Display compatibility:** some displays may require 5V power
 
-### Не считаются обороты:
-- **Проверьте подключение датчиков:** убедитесь, что провода подключены правильно к пинам D5 и D6
-- **Тестируйте датчики:** подключите мультиметр к выходам датчиков - напряжение должно изменяться при приближении магнитов
-- **Сила магнитов:** используйте более сильные магниты или поднесите ближе (1-5 мм)
-- **Полярность:** попробуйте перевернуть магниты (некоторые датчики реагируют на определённый полюс)
+### RPM not counting:
+- **Check sensor connection:** ensure wires are connected correctly to pins D5 and D6
+- **Test sensors:** connect a multimeter to sensor outputs - voltage should change when magnets approach
+- **Magnet strength:** use stronger magnets or bring closer (1-5 mm)
+- **Polarity:** try flipping the magnets (some sensors respond to a specific pole)
 
-### Не удается загрузить прошивку:
-- **Порт:** убедитесь, что ESP8266 определился в системе (Диспетчер устройств в Windows)
-- **Драйверы:** установите драйверы для CH340 или CP2102 (зависит от платы)
-- **USB кабель:** используйте кабель с поддержкой передачи данных (не только зарядки)
-- **Кнопка BOOT:** на некоторых платах нужно удерживать кнопку BOOT/FLASH во время загрузки
+### Unable to upload firmware:
+- **Port:** ensure ESP8266 is detected in the system (Device Manager in Windows)
+- **Drivers:** install drivers for CH340 or CP2102 (depends on the board)
+- **USB cable:** use a cable that supports data transfer (not just charging)
+- **BOOT button:** on some boards, hold the BOOT/FLASH button during upload
 
-### Проблемы с компиляцией:
-- **Обновите PlatformIO:** Tools → PlatformIO → Update All
-- **Очистите проект:** PlatformIO → Clean
-- **Проверьте platformio.ini:** убедитесь, что файл не повреждён
-- **Библиотека TM1637:** убедитесь, что библиотека TM1637Display установлена
+### Compilation issues:
+- **Update PlatformIO:** Tools → PlatformIO → Update All
+- **Clean project:** PlatformIO → Clean
+- **Check platformio.ini:** ensure the file is not corrupted
+- **TM1637 library:** ensure the TM1637Display library is installed
 
-## Дополнительная информация
+## Additional Information
 
-### Характеристики дисплея TM1637:
-- Напряжение питания: 3.3V - 5V
-- Количество разрядов: 4
-- Тип: 7-сегментный светодиодный
-- Интерфейс: 2-проводной (CLK + DIO)
-- Яркость: регулируемая (8 уровней)
+### TM1637 Display Characteristics:
+- Supply voltage: 3.3V - 5V
+- Number of digits: 4
+- Type: 7-segment LED
+- Interface: 2-wire (CLK + DIO)
+- Brightness: adjustable (8 levels)
 
-### Характеристики датчика A3144:
-- Напряжение питания: 4.5-24V (работает от 3.3V)
-- Выходной ток: до 25 мА
-- Температурный диапазон: -40°C до +85°C
-- Чувствительность: ~35 Гаусс
+### A3144 Sensor Characteristics:
+- Supply voltage: 4.5-24V (works from 3.3V)
+- Output current: up to 25 mA
+- Temperature range: -40°C to +85°C
+- Sensitivity: ~35 Gauss
 
-### Настройка для других датчиков:
-Если используете другой датчик Холла, возможно потребуется изменить логику в коде:
-- **Аналоговые датчики** (например, SS49E): требуют подключения к аналоговому пину A0
-- **Цифровые датчики с обратной логикой**: может потребоваться инвертировать сигнал в коде
+### Setup for Other Sensors:
+If using a different Hall sensor, you may need to change the logic in the code:
+- **Analog sensors** (e.g., SS49E): require connection to analog pin A0
+- **Digital sensors with inverted logic**: may require signal inversion in the code
 
-## Лицензия
+## License
 
-Проект распространяется под лицензией MIT. Используйте и модифицируйте для образовательных целей!
+The project is distributed under the MIT license. Use and modify for educational purposes!
